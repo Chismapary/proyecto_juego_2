@@ -1,39 +1,39 @@
-# 🎮 PACMAN 3D - Proyecto de Computación Gráfica II
+# PACMAN 3D - Proyecto de Computación Gráfica II
 
-## 📋 Descripción
+## Descripción
 
 Este proyecto es una implementación completa del clásico juego Pacman en 3D utilizando WebGL puro. El proyecto aplica todos los conceptos aprendidos en las guías de trabajo del curso de Computación Gráfica II.
 
-## 🎯 Conceptos Aplicados de las Guías
+## Conceptos Aplicados de las Guías
 
-### Guía 01 - Hello WebGL
-- ✅ Inicialización del contexto WebGL
-- ✅ Configuración básica del canvas
-- ✅ Manejo de shaders (vertex y fragment)
+### Hello WebGL
+- Inicialización del contexto WebGL
+- Configuración básica del canvas
+- Manejo de shaders (vertex y fragment)
 
-### Guía 03-04 - Primitivas Geométricas
-- ✅ Uso de primitivas básicas (cubos, esferas)
-- ✅ Manejo de buffers de vértices e índices
-- ✅ Renderizado de geometría 3D
+### Primitivas Geométricas
+- Uso de primitivas básicas (cubos, esferas)
+- Manejo de buffers de vértices e índices
+- Renderizado de geometría 3D
 
-### Guía 05 - Transformaciones
-- ✅ Matrices de transformación (traslación, rotación, escala)
-- ✅ Composición de transformaciones
-- ✅ Uso de gl-matrix para operaciones matriciales
+### Transformaciones
+- Matrices de transformación (traslación, rotación, escala)
+- Composición de transformaciones
+- Uso de gl-matrix para operaciones matriciales
 
-### Guía 06 - Primitivas Avanzadas
-- ✅ Implementación de múltiples primitivas geométricas
-- ✅ Sistema de coordenadas 3D
-- ✅ Manejo de colores por objeto
+### Primitivas Avanzadas
+- Implementación de múltiples primitivas geométricas
+- Sistema de coordenadas 3D
+- Manejo de colores por objeto
 
-### Guía 07 - Cámara y Proyección
-- ✅ Cámara orbital interactiva (coordenadas esféricas)
-- ✅ Proyección en perspectiva
-- ✅ Matrices de vista (view matrix)
-- ✅ Control de cámara con mouse (arrastrar y zoom)
-- ✅ Depth testing para renderizado correcto
+### Cámara y Proyección
+- Cámara orbital interactiva (coordenadas esféricas)
+- Proyección en perspectiva
+- Matrices de vista (view matrix)
+- Control de cámara con mouse (arrastrar y zoom)
+- Depth testing para renderizado correcto
 
-## 🎮 Características del Juego
+## Características del Juego
 
 ### Elementos del Juego
 - **Pacman**: Esfera amarilla controlable por el jugador
@@ -52,12 +52,14 @@ Este proyecto es una implementación completa del clásico juego Pacman en 3D ut
 
 ### Controles Interactivos
 - **Movimiento de Pacman**: W/A/S/D o flechas direccionales
+- **Saltar**: Barra espaciadora
 - **Cámara**: 
   - Arrastrar mouse: Rotar cámara orbital
   - Rueda del mouse: Zoom in/out
 - **Reiniciar**: Tecla R
+- **Pantalla completa**: Botón "Pantalla Completa"
 
-## 📁 Estructura de Archivos (Modular)
+## Estructura de Archivos (Modular)
 
 ```
 Proyecto/
@@ -106,7 +108,7 @@ El código está organizado en módulos independientes para facilitar el manteni
   - Gestión de niveles
   - Controles de teclado
 
-## 🚀 Cómo Ejecutar
+## Cómo Ejecutar
 
 1. **Opción 1 - Servidor Local (Recomendado)**
    ```bash
@@ -126,7 +128,7 @@ El código está organizado en módulos independientes para facilitar el manteni
    - Abre el archivo `index.html` directamente en tu navegador
    - Nota: Algunos navegadores pueden tener restricciones de seguridad
 
-## 🎨 Detalles Técnicos
+## Detalles Técnicos
 
 ### Sistema de Renderizado
 - **Shaders**: Vertex shader con transformaciones MVP (Model-View-Projection)
@@ -135,7 +137,7 @@ El código está organizado en módulos independientes para facilitar el manteni
 - **Depth Testing**: Habilitado para correcta visualización 3D
 
 ### Sistema de Coordenadas
-- Laberinto: Grid de 15x15
+- Laberinto: Grid de 19x24 (ancho x alto)
 - Cada celda: 2 unidades de espacio
 - Paredes: Altura de 2 unidades
 - Personajes: Elevación de 0.5 unidades
@@ -153,7 +155,7 @@ El código está organizado en módulos independientes para facilitar el manteni
 - Velocidades diferentes por fantasma
 - Incremento de velocidad por nivel
 
-## 🎯 Objetivos del Juego
+## Objetivos del Juego
 
 1. **Objetivo Principal**: Comer todos los puntos amarillos del laberinto
 2. **Evitar**: No ser atrapado por los fantasmas
@@ -162,19 +164,21 @@ El código está organizado en módulos independientes para facilitar el manteni
    - Punto comido: +10 puntos
    - Nivel completado: +100 puntos
 
-## 🔧 Requisitos
+## Requisitos
 
 - Navegador web moderno con soporte para WebGL
 - Recomendado: Chrome, Firefox, Edge, Safari (versiones recientes)
 
-## 📊 Sistema de Puntuación
+## Sistema de Puntuación
 
 - **Puntos por dot**: 10 puntos
+- **Puntos por power pellet**: 50 puntos
+- **Fantasma comido (modo asustado)**: 200 puntos
 - **Bonus por nivel**: 100 puntos
 - **Vidas iniciales**: 3
 - **Game Over**: Cuando se pierden todas las vidas
 
-## 🎨 Paleta de Colores
+## Paleta de Colores
 
 - **Pacman**: Amarillo (1.0, 1.0, 0.0)
 - **Blinky (Fantasma Rojo)**: (1.0, 0.0, 0.0)
@@ -185,7 +189,7 @@ El código está organizado en módulos independientes para facilitar el manteni
 - **Piso**: Azul muy oscuro (0.05, 0.05, 0.15)
 - **Puntos**: Amarillo (1.0, 1.0, 0.0)
 
-## 🐛 Solución de Problemas
+## Solución de Problemas
 
 ### El juego no se carga
 - Verifica que todos los archivos estén en la misma carpeta
@@ -202,11 +206,11 @@ El código está organizado en módulos independientes para facilitar el manteni
 - Cierra otras pestañas del navegador
 - Verifica que tu GPU esté siendo utilizada
 
-## 👨‍💻 Autor
+## Autor
 
 Proyecto desarrollado para el curso de Computación Gráfica II
 
-## 📝 Notas Adicionales
+## Notas Adicionales
 
 Este proyecto demuestra la aplicación práctica de:
 - Programación de shaders GLSL
@@ -216,4 +220,4 @@ Este proyecto demuestra la aplicación práctica de:
 - Lógica de juego y detección de colisiones
 - Renderizado en tiempo real con WebGL
 
-¡Disfruta jugando Pacman 3D! 🎮👾
+Disfruta jugando Pacman 3D.
