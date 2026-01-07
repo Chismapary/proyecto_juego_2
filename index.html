@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Pacman 3D - Computación Gráfica II</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #1a1a2e;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    h1 {
+      color: #ffeb3b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 10px;
+    }
+    
+    #gameInfo {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .info-item {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 2px solid #ffeb3b;
+    }
+    
+    .score { color: #ffeb3b; }
+    .lives { color: #ff5252; }
+    .level { color: #4caf50; }
+    
+    canvas {
+      border: 3px solid #ffeb3b;
+      box-shadow: 0 0 20px rgba(255,235,59,0.5);
+      background: #0f0f1e;
+      cursor: grab;
+    }
+    
+    canvas:active {
+      cursor: grabbing;
+    }
+    
+    #controls {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 800px;
+      text-align: center;
+    }
+    
+    #controls h3 {
+      color: #ffeb3b;
+      margin-top: 0;
+    }
+    
+    #controls p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    
+    .key {
+      background: #ffeb3b;
+      color: #1a1a2e;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-family: monospace;
+    }
+    
+    #gameOver {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 40px;
+      border-radius: 15px;
+      border: 3px solid #ff5252;
+      text-align: center;
+      z-index: 1000;
+    }
+    
+    #gameOver h2 {
+      color: #ff5252;
+      font-size: 36px;
+      margin: 0 0 20px 0;
+    }
+    
+    #gameOver button {
+      background: #ffeb3b;
+      color: #1a1a2e;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    #gameOver button:hover {
+      background: #ffd600;
+      transform: scale(1.05);
+    }
+    
+    #cameraMenu {
+      margin-bottom: 15px;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    #cameraMenu h3 {
+      color: #ffeb3b;
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    
+    .camera-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .camera-btn {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      border: 2px solid #666;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .camera-btn:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: #ffeb3b;
+      transform: translateY(-2px);
+    }
+    
+    .camera-btn.active {
+      background: #ffeb3b;
+      color: #1a1a2e;
+      border-color: #ffeb3b;
+    }
+    
+    #fullscreenBtn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    
+    #fullscreenBtn:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.4);
+    }
+    
+    #fullscreenBtn:active {
+      transform: translateY(0);
+    }
+    
+    #gameContainer {
+      position: relative;
+      display: inline-block;
+    }
+    
+    #gameContainer.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #gameContainer.fullscreen canvas {
+      width: 100vw !important;
+      height: 100vh !important;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>PACMAN 3D</h1>
+  
+  <div id="gameInfo">
+    <div class="info-item">
+      <span>Puntuación: </span><span class="score" id="score">0</span>
+    </div>
+    <div class="info-item">
+      <span>Vidas: </span><span class="lives" id="lives">3</span>
+    </div>
+    <div class="info-item">
+      <span>Nivel: </span><span class="level" id="level">1</span>
+    </div>
+  </div>
+  
+  <div id="cameraMenu">
+    <h3>Modo de Cámara</h3>
+    <div class="camera-buttons">
+      <button class="camera-btn active" onclick="changeCameraMode('static')">Estática</button>
+      <button class="camera-btn" onclick="changeCameraMode('orbital')">Orbital</button>
+      <button class="camera-btn" onclick="changeCameraMode('firstPerson')">Primera Persona</button>
+    </div>
+  </div>
+  
+  <button id="fullscreenBtn" onclick="toggleFullscreen()">Pantalla Completa</button>
+  
+  <div id="gameContainer">
+    <canvas id="myCanvas" width="1000" height="700">
+      El navegador no soporta HTML5
+    </canvas>
+  </div>
+  
+  <div id="controls">
+    <h3>CONTROLES</h3>
+    <p><span class="key">W</span> <span class="key">A</span> <span class="key">S</span> <span class="key">D</span> o <span class="key">↑</span> <span class="key">←</span> <span class="key">↓</span> <span class="key">→</span> - Mover Pacman</p>
+    <p><span class="key">Mouse</span> - Rotar cámara orbital (arrastra) | <span class="key">Rueda</span> - Zoom (solo modo orbital)</p>
+    <p><span class="key">R</span> - Reiniciar juego</p>
+    <p><strong>Objetivo:</strong> Come todos los puntos blancos y evita a los fantasmas!</p>
+    <p><strong>Modos de Cámara:</strong> Estática (vista superior), Orbital (rotar libremente), Primera Persona (vista desde Pacman)</p>
+  </div>
+  
+  <div id="gameOver">
+    <h2>GAME OVER</h2>
+    <p id="finalScore" style="font-size: 24px; color: #ffeb3b;"></p>
+    <button onclick="restartGame()">Jugar de Nuevo</button>
+  </div>
+
+  <script id="myVertexShader" type="x-shader/x-vertex">
+    uniform mat4 modelMatrix;
+    uniform mat4 viewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform vec3 objectColor;
+    
+    attribute vec3 VertexPosition;
+    
+    varying vec3 vColor;
+    
+    void main() {
+      gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(VertexPosition, 1.0);
+      vColor = objectColor;
+    }
+  </script>
+
+  <script id="myFragmentShader" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec3 vColor;
+    
+    void main() {
+      gl_FragColor = vec4(vColor, 1.0);
+    }
+  </script>
+
+  <!-- Librerías -->
+  <script src="gl-matrix-min.js"></script>
+  <script src="primitivas.js"></script>
+  
+  <!-- Módulos del juego (orden importante) -->
+  <script src="escenario.js"></script>
+  <script src="pacman.js"></script>
+  <script src="camara.js"></script>
+  <script src="fantasmas.js"></script>
+  <script src="game.js"></script>
+
+</body>
+</html>
